@@ -19,3 +19,16 @@ def inicio():
 @app.get("/productos")
 def obtener_productos():
     return jsonify(list(productos.values()))
+
+
+## Obtener producto por ID
+
+@app.route('/productos/<int:codigo>', methods=['GET'])
+def obtenerProductoPorId(codigo):
+    for producto in productos:
+        if producto["codigo"] == codigo:
+            return jsonify(producto)
+        
+    return jsonify({
+        "mensaje": "Producto no encontrado"
+    }), 404
