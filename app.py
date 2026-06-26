@@ -32,3 +32,28 @@ def obtenerProductoPorId(codigo):
     return jsonify({
         "mensaje": "Producto no encontrado"
     }), 404
+
+##Agregar Productos
+
+@app.post("/productos")
+def agregar_producto():
+    nuevo_producto = request.get_json()
+
+    if not nuevo_producto or "nombre" not in nuevo_producto:
+        return jsonify({"error": "El campo nombre es obligatorio"}), 400
+
+    if "precio" not in nuevo_producto:
+        return jsonify({"error": "El campo precio es obligatorio"}), 400
+
+    if "stock" not in nuevo_producto:
+        return jsonify({"error": "El campo stock es obligatorio"}), 400
+
+    codigo_producto = max(productos.keys(), default=200) + 1
+
+    nuevo_producto["codigo"] = codigo_producto
+    productos[codigo_producto] = nuevo_producto
+
+    return jsonify(nuevo_producto), 201
+
+if __name__ == "__main__":
+    app.run(debug=True)
